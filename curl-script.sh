@@ -1,5 +1,5 @@
-API_USER="cat /config/api_user"
-API_KEY="cat /config/api_key"
+#API_USER="cat /config/api_user" --> given in pipeline env variable
+#API_KEY="cat /config/api_key" --> given in pipeline env variable
 JFROG_URL=https://bawajan.jfrog.io/artifactory
 JFROG_REPO=bawajan-general-file-repo/
 FILE_TO_UPLOAD="test_file_to_upload.txt"
