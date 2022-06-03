@@ -64,11 +64,4 @@ case $flag in
      *)        echo " !!  httpstatus: bad flag" && exit 1 ;;
 esac
 
-f="$code $status"
-echo $f | egrep "000|Informational|Redirection|Error"
-if [ $? -eq 0 ]
-then
-    echo $f
-    exit 1
-fi
 
