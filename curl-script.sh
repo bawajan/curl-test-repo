@@ -21,7 +21,7 @@ then
      exit 1
 fi
 
-code=`echo $(curl -X GET -u "${API_USER}:${API_KEY}" "${JFROG_URL}/${JFROG_REPO}/${FILE_TO_UPLOAD}" --silent --write-out %{http_code} -o response.out)`
+code=`echo $(curl -X PUT -u "${API_USER}:${API_KEY}" "${JFROG_URL}/${JFROG_REPO}/${FILE_TO_UPLOAD}" --silent --write-out %{http_code} -o response.out)`
 #code=`echo $(curl -X GET -u "${1}:${2}" "${JFROG_URL}/${JFROG_REPO}/" --silent --write-out %{http_code} -o response.out)`
 
 #code=000
