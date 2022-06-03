@@ -6,10 +6,23 @@ FILE_TO_UPLOAD="test_file_to_upload.txt"
 timeout="3"
 flag="--status"
 
+if [ -z "${API_USER}" ] || [ -z "$API_KEY}" ] || [ -z "${FILE_TO_UPLOAD}" ]
+then
+     echo "FAILED: Missing Info"
+     exit 1
+fi
+
+if [ ! -f "${FILE_TO_UPLOAD}" ] 
+then
+     echo "FAILED: File "${FILE_TO_UPLOAD}" does not exist"
+     exit 1
+fi
+
 #code=`echo $(curl -X GET -u "${API_USER}:${API_KEY}" "${JFROG_URL}/${JFROG_REPO}/${FILE_TO_UPLOAD}" --silent --write-out %{http_code} -o response.out)`
 code=`echo $(curl -X GET -u "${1}:${2}" "${JFROG_URL}/${JFROG_REPO}/" --silent --write-out %{http_code} -o response.out)`
 
 #code=000
+echo -e "=========================Status Code Info ===========================\n"
 
 case $code in 
      000) status="Not responding within $timeout seconds" ;;
@@ -56,6 +69,8 @@ case $code in
      505) status="Server Error: HTTP Version Not Supported" ;;
      *)   echo " !!  httpstatus: status not defined." && exit 1 ;;
 esac
+
+echo -e "\n=======================End====================="
 
 # _______________ MAIN
 case $flag in 
