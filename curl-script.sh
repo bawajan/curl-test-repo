@@ -55,6 +55,11 @@ case $code in
      *)   echo " !!  httpstatus: status not defined." && exit 1 ;;
 esac
 
+if [ $code == 200 ] 
+then
+     echo " STATUS Code is $code - Exiting..."
+     exit 0
+fi
 
 # _______________ MAIN
 case $flag in 
@@ -64,3 +69,5 @@ case $flag in
      -c)       echo "$code"         ;;
      *)        echo " !!  httpstatus: bad flag" && exit 1 ;;
 esac
+
+
