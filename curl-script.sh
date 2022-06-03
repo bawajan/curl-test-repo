@@ -6,6 +6,9 @@ FILE_TO_UPLOAD="test_file_to_upload.txt"
 timeout="3"
 flag="--status"
 
+declare API_KEY
+declare API_USER
+
 if [ -z "${API_USER}" ] || [ -z "$API_KEY}" ] || [ -z "${FILE_TO_UPLOAD}" ]
 then
      echo "FAILED: Missing Info"
