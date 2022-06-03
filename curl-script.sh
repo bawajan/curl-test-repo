@@ -55,12 +55,6 @@ case $code in
      *)   echo " !!  httpstatus: status not defined." && exit 1 ;;
 esac
 
-if [ $code == 200 ] 
-then
-     echo " STATUS Code is $code - Exiting..."
-     exit 0
-fi
-
 # _______________ MAIN
 case $flag in 
      --status) echo "$code $status" ;;
@@ -70,4 +64,11 @@ case $flag in
      *)        echo " !!  httpstatus: bad flag" && exit 1 ;;
 esac
 
+f="$code $status"
+echo $f | egrep "000|Informational|Redirection|Error"
+if [ $? -eq 0 ]
+then
+    echo $f
+    exit 1
+fi
 
