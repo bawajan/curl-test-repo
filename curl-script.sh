@@ -57,13 +57,6 @@ case $code in
      *)   echo " !!  httpstatus: status not defined." && exit 1 ;;
 esac
 
-echo $code $status > pipeline-status.txt
-cat pipeline-status.txt | egrep "000|Informational|Redirection|Error"
-if [ $? -eq 0 ]
-then
-     exit 1
-fi
-
 # _______________ MAIN
 case $flag in 
      --status) echo "$code $status" ;;
@@ -73,4 +66,12 @@ case $flag in
      *)        echo " !!  httpstatus: bad flag" && exit 1 ;;
 esac
 
+# This is for PIPE LINE Pass / FAIL Test
+
+echo $code $status > pipeline-status.txt
+cat pipeline-status.txt | egrep "000|Informational|Redirection|Error"
+if [ $? -eq 0 ]
+then
+     exit 1
+fi
 
