@@ -1,3 +1,7 @@
+#!/bin/bash
+#This script is pulled from IBM Cloud "bawajan-curl-test" toolchain and tested OK on 06/03/2022)
+#Used JFROG as well
+
 #API_USER="cat /config/api_user" --> given in pipeline env variable
 #API_KEY="cat /config/api_key" --> given in pipeline env variable
 JFROG_URL=https://bawajan.jfrog.io/artifactory
