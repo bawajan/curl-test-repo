@@ -1,13 +1,35 @@
-API_USER="cat /config/api_user"
-API_KEY="cat /config/api_key"
+#!/bin/bash
+#This script is pulled from IBM Cloud "bawajan-curl-test" toolchain and tested OK on 06/03/2022)
+#Used JFROG as well
+
+#API_USER="cat /config/api_user" --> given in pipeline env variable
+#API_KEY="cat /config/api_key" --> given in pipeline env variable
 JFROG_URL=https://bawajan.jfrog.io/artifactory
-JFROG_REPO=Bawa-jfrog-repo1/
+JFROG_REPO=bawajan-general-file-repo/
 FILE_TO_UPLOAD="test_file_to_upload.txt"
 timeout="3"
 flag="--status"
 
-code=`echo $(curl -X GET -u "${API_USER}:${API_KEY}" "${JFROG_URL}/${JFROG_REPO}/${FILE_TO_UPLOAD}" --silent --write-out %{http_code} -o response.out)`
-#code=`echo $(curl -X GET -u "${API_USER}:${API_KEY}" "${JFROG_URL}/${JFROG_REPO}/" --silent --write-out %{http_code} -o response.out)`
+declare API_KEY
+declare API_USER
+
+if [ -z "${API_USER}" ] || [ -z "$API_KEY}" ] || [ -z "${FILE_TO_UPLOAD}" ]
+then
+     echo "FAILED: Missing Info"
+     exit 1
+fi
+
+if [ ! -f "${FILE_TO_UPLOAD}" ] 
+then
+     echo "FAILED: File "${FILE_TO_UPLOAD}" does not exist"
+     exit 1
+fi
+
+code=`echo $(curl -X PUT -u "${API_USER}:${API_KEY}" "${JFROG_URL}/${JFROG_REPO}/${FILE_TO_UPLOAD}" --silent --write-out %{http_code} -o response.out)`
+#code=`echo $(curl -X GET -u "${1}:${2}" "${JFROG_URL}/${JFROG_REPO}/" --silent --write-out %{http_code} -o response.out)`
+
+#code=000
+echo -e "=========================Status Code Info ===========================\n"
 
 case $code in 
      000) status="Not responding within $timeout seconds" ;;
@@ -55,7 +77,6 @@ case $code in
      *)   echo " !!  httpstatus: status not defined." && exit 1 ;;
 esac
 
-
 # _______________ MAIN
 case $flag in 
      --status) echo "$code $status" ;;
@@ -64,3 +85,15 @@ case $flag in
      -c)       echo "$code"         ;;
      *)        echo " !!  httpstatus: bad flag" && exit 1 ;;
 esac
+
+echo -e "\n=======================End====================="
+
+# This is for PIPE LINE Pass / FAIL Test
+
+echo $code $status > pipeline-status.txt
+cat pipeline-status.txt | egrep "000|Informational|Redirection|Error"
+if [ $? -eq 0 ]
+then
+     exit 1
+fi
+
